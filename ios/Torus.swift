@@ -8,7 +8,7 @@
 import Foundation
 import TorusSwiftDirectSDK
 import PromiseKit
-import BestLogger
+import OSLog
 
 @available(iOS 11.0, *)
 @objc(RNTorusDirectSdk)
@@ -38,12 +38,12 @@ public class RNTorusDirectSdk: NSObject {
                                          extraQueryParams: subverifierWeb.queryParameters ?? [:],
                                          jwtParams: subverifierWeb.jwtParams ?? [:])
             
-            var logvalue: Int = 5
+            var logvalue: OSLogType = .default
             if(self.directAuthArgs!.enableLogging != nil && self.directAuthArgs!.enableLogging == true){
-                logvalue = 0
+                logvalue = .debug
             }
             
-            self.tdsdk = TorusSwiftDirectSDK(aggregateVerifierType: .singleLogin, aggregateVerifierName: subverifierWeb.verifier, subVerifierDetails: [sub], loglevel: BestLogger.Level(rawValue: logvalue)!)
+            self.tdsdk = TorusSwiftDirectSDK(aggregateVerifierType: .singleLogin, aggregateVerifierName: subverifierWeb.verifier, subVerifierDetails: [sub], loglevel: logvalue)
             
             self.tdsdk!.triggerLogin(browserType: .external).done{ data in
                 resolve(data)
@@ -77,12 +77,12 @@ public class RNTorusDirectSdk: NSObject {
                                          extraQueryParams: subverifierWeb.queryParameters ?? [:],
                                          jwtParams: subverifierWeb.jwtParams ?? [:])
             
-            var logvalue: Int = 5
+            var logvalue: OSLogType = .default
             if(self.directAuthArgs!.enableLogging != nil && self.directAuthArgs!.enableLogging == true){
-                logvalue = 0
+                logvalue = .debug
             }
             
-            self.tdsdk = TorusSwiftDirectSDK(aggregateVerifierType: verifierTypes(rawValue: aggregateVerifierWeb.aggregateVerifierType)!, aggregateVerifierName: aggregateVerifierWeb.verifierIdentifier, subVerifierDetails: [sub], loglevel: BestLogger.Level(rawValue: logvalue)!)
+            self.tdsdk = TorusSwiftDirectSDK(aggregateVerifierType: verifierTypes(rawValue: aggregateVerifierWeb.aggregateVerifierType)!, aggregateVerifierName: aggregateVerifierWeb.verifierIdentifier, subVerifierDetails: [sub], loglevel: logvalue)
             
             self.tdsdk!.triggerLogin(browserType: .external).done{ data in
                 resolve(data)
